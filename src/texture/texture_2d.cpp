@@ -1,6 +1,7 @@
 #include "texture/texture_2d.h"
 #include "graphics.h"
 #include <utility>
+#include <stdexcept>
 
 void Texture2D::set_wrap(TextureConfigurations::WrapMode p_wrap_mode, unsigned int p_wrap_dimension) {
     switch (p_wrap_mode) {
