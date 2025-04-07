@@ -1,10 +1,10 @@
 # MLGL Renderer
 
-This is originally a final project for my Computer Graphics course, and later I decided to keep working on it and added a lot new features.
+This is originally a final project for my Computer Graphics course. Later I decided to keep working on it and added some new features.
 
-This will also my last renderer implemented in OpenGL. Later I'll learn Vulkan and use that as the primary Graphics API I'm going to use.
+This will also my last renderer implemented in OpenGL. Later I'll learn Vulkan and use that as the primary Graphics API.
 
-These are some features that this project support
+This renderer supports the following features:
 
 * Shadowmap
 
