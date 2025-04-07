@@ -45,7 +45,7 @@ cmake -B build -G Ninja -DUSE_LOCAL_DEPS=ON
 cmake --build build
 
 # Release
-cmake -B release -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake -B release -G Ninja -DUSE_LOCAL_DEPS=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build release --config Release
 ```
 
