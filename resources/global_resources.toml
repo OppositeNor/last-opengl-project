@@ -1,0 +1,29 @@
+["default_texture_2d"]
+type = "texture_2d_rgb"
+scale_nearest_min = true
+scale_nearest_mag = true
+path = "textures/default_texture.ppm"
+
+["default_texture_cube"]
+type = "texture_cube"
+scale_nearest_min = true
+scale_nearest_mag = true
+top = "textures/default_texture_cube/top.ppm"
+bottom = "textures/default_texture_cube/bottom.ppm"
+front = "textures/default_texture_cube/front.ppm"
+back = "textures/default_texture_cube/back.ppm"
+left = "textures/default_texture_cube/left.ppm"
+right = "textures/default_texture_cube/right.ppm"
+
+["skybox"]
+type = "texture_cube"
+scale_nearest_min = false
+scale_nearest_mag = false
+rotate_top = "ccw"
+rotate_bottom = "cw"
+top = "textures/skybox/top.jpg"
+bottom = "textures/skybox/bottom.jpg"
+front = "textures/skybox/front.jpg"
+back = "textures/skybox/back.jpg"
+left = "textures/skybox/left.jpg"
+right = "textures/skybox/right.jpg"

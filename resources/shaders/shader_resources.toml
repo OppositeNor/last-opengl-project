@@ -1,0 +1,136 @@
+[shader_cube_depth]
+type = "shader_pipeline"
+vertex = "shaders/data/cube_depth_vertex.glsl"
+geometry = "shaders/data/cube_depth_geometry.glsl"
+fragment = "shaders/data/cube_depth_fragment.glsl"
+
+[shader_depth_pbr]
+type = "shader_pipeline"
+vertex = "shaders/data/depth_shader_pbr_vertex.glsl"
+fragment = "shaders/data/depth_shader_pbr_fragment.glsl"
+
+[shader_depth_phong]
+type = "shader_pipeline"
+vertex = "shaders/data/depth_shader_phong_vertex.glsl"
+fragment = "shaders/data/depth_shader_phong_fragment.glsl"
+
+[shader_depth_phong_color]
+type = "shader_pipeline"
+vertex = "shaders/data/depth_shader_phong_color_vertex.glsl"
+fragment = "shaders/data/depth_shader_phong_color_fragment.glsl"
+
+[shader_normal]
+type = "shader_pipeline"
+vertex = "shaders/data/normal_shader_vertex.glsl"
+fragment = "shaders/data/normal_shader_fragment.glsl"
+
+[shader_id]
+type = "shader_pipeline"
+vertex = "shaders/data/id_shader_vertex.glsl"
+fragment = "shaders/data/id_shader_fragment.glsl"
+
+[shader_world_coordinate]
+type = "shader_pipeline"
+vertex = "shaders/data/world_coordinate_vertex.glsl"
+fragment = "shaders/data/world_coordinate_fragment.glsl"
+
+[shader_flux_pbr]
+type = "shader_pipeline"
+vertex = "shaders/data/flux_vertex.glsl"
+fragment = "shaders/data/flux_pbr_fragment.glsl"
+
+[shader_flux_phong]
+type = "shader_pipeline"
+vertex = "shaders/data/flux_vertex.glsl"
+fragment = "shaders/data/flux_phong_fragment.glsl"
+
+[shader_flux_phong_color]
+type = "shader_pipeline"
+vertex = "shaders/data/flux_vertex.glsl"
+fragment = "shaders/data/flux_phong_color_fragment.glsl"
+
+[shader_fb_sobel_contour]
+type = "shader_pipeline"
+vertex = "shaders/data/fb_vertex.glsl"
+fragment = "shaders/data/fb_sobel_contour_fragment.glsl"
+
+[shader_fb_edge_dn]
+type = "shader_pipeline"
+vertex = "shaders/data/fb_vertex.glsl"
+fragment = "shaders/data/fb_edge_dn_fragment.glsl"
+
+[shader_fb_red]
+type = "shader_pipeline"
+vertex = "shaders/data/fb_vertex.glsl"
+fragment = "shaders/data/fb_red_fragment.glsl"
+
+[shader_fb_regular]
+type = "shader_pipeline"
+vertex = "shaders/data/fb_vertex.glsl"
+fragment = "shaders/data/fb_regular_fragment.glsl"
+
+[shader_fb_blur]
+type = "shader_pipeline"
+vertex = "shaders/data/fb_vertex.glsl"
+fragment = "shaders/data/fb_blur.glsl"
+
+[shader_material_pbr]
+type = "shader_pipeline"
+vertex = "shaders/data/material_pbr_vertex.glsl"
+fragment = "shaders/data/material_pbr_fragment.glsl"
+
+[shader_material_phong]
+type = "shader_pipeline"
+vertex = "shaders/data/material_phong_vertex.glsl"
+fragment = "shaders/data/material_phong_fragment.glsl"
+
+[shader_material_phong_color]
+type = "shader_pipeline"
+vertex = "shaders/data/material_phong_color_vertex.glsl"
+fragment = "shaders/data/material_phong_color_fragment.glsl"
+
+[shader_material_test_box]
+type = "shader_pipeline"
+vertex = "shaders/data/material_test_box_vertex.glsl"
+fragment = "shaders/data/material_test_box_fragment.glsl"
+
+[shader_material_test_plane]
+type = "shader_pipeline"
+vertex = "shaders/data/material_test_plane_vertex.glsl"
+fragment = "shaders/data/material_test_plane_fragment.glsl"
+
+[shader_skeleton]
+type = "shader_pipeline"
+vertex = "shaders/data/skeleton_shader_vertex.glsl"
+fragment = "shaders/data/skeleton_shader_fragment.glsl"
+
+[shader_coord_display]
+type = "shader_pipeline"
+vertex = "shaders/data/coord_display_vertex.glsl"
+fragment = "shaders/data/coord_display_fragment.glsl"
+
+[shader_spot_light_shadowmap]
+type = "shader_pipeline"
+vertex = "shaders/data/spot_light_shadowmap_vertex.glsl"
+fragment = "shaders/data/spot_light_shadowmap_fragment.glsl"
+
+[shader_skybox]
+type = "shader_pipeline"
+vertex = "shaders/data/skybox_vertex.glsl"
+fragment = "shaders/data/skybox_fragment.glsl"
+
+[shader_skeletal_mesh_morph_compute]
+type = "shader_compute"
+path = "shaders/data/skeletal_mesh_morph_compute.glsl"
+
+[shader_skeletal_mesh_skeleton_compute]
+type = "shader_compute"
+path = "shaders/data/skeleton_mesh_skeleton_compute.glsl"
+
+[shader_lpv_inject_compute]
+type = "shader_compute"
+path = "shaders/data/lpv_inject_compute.glsl"
+
+[shader_lpv_propagate_compute]
+type = "shader_compute"
+path = "shaders/data/lpv_propagate_compute.glsl"

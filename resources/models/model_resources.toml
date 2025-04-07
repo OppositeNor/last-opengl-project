@@ -1,0 +1,33 @@
+["cube"]
+type = "obj_model"
+path = "models/data/cube/cube.obj"
+
+["plane"]
+type = "obj_model"
+path = "models/data/plane/plane.obj"
+
+["house"]
+type = "obj_model"
+path = "models/data/house/house_obj.obj"
+
+["spartan"]
+type = "skeletal_animation_data"
+path = "models/data/spartan/scene.gltf"
+
+["hutao"]
+type = "skeletal_animation_data"
+path = "models/data/hutao/hutao_multi2.fbx"
+mesh_z_up_to_y_up = true
+
+["miku"]
+type = "skeletal_animation_data"
+path = "models/data/miku/model.pmx"
+
+# ["old_rusty_car"]
+# type = "skeletal_animation_data"
+# path = "models/data/old_rusty_car/scene.gltf"
+# mesh_z_up_to_y_up = true
+
+["sponza"]
+type = "skeletal_animation_data"
+path = "models/data/glTF-Sample-Modules/2.0/Sponza/glTF/Sponza.gltf"

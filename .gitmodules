@@ -1,0 +1,28 @@
+[submodule "dependencies/sdb"]
+	path = dependencies/sdb
+	url = https://github.com/nothings/stb
+[submodule "dependencies/assimp"]
+	path = dependencies/assimp
+	url = https://github.com/assimp/assimp
+[submodule "dependencies/tomlplusplus"]
+	path = dependencies/tomlplusplus
+	url = https://github.com/marzer/tomlplusplus.git
+[submodule "dependencies/imgui"]
+	path = dependencies/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "dependencies/SDL2"]
+	path = dependencies/SDL2
+	url = https://github.com/libsdl-org/SDL.git
+	branch = SDL2
+[submodule "dependencies/glfw"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "resources/models/data/glTF-Sample-Modules"]
+	path = resources/models/data/glTF-Sample-Modules
+	url = https://github.com/KhronosGroup/glTF-Sample-Models.git
+[submodule "dependencies/stb"]
+	path = dependencies/stb
+	url = https://github.com/nothings/stb
