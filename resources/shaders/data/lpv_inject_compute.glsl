@@ -22,7 +22,7 @@ uniform SpotLight spot_light;
 float sh_0_0(vec3 normal) { return 0.282095; }
 float sh_1_n1(vec3 normal) { return 0.488603 * normal.y; }
 float sh_1_0(vec3 normal) { return 0.488603 * normal.z; }
-float sh_1_1(vec3 normal) { return 0.488603 * normal.y; }
+float sh_1_1(vec3 normal) { return 0.488603 * normal.x; }
 
 void main() {
     ivec2 rsm_size = textureSize(spot_light.flux_map, 0);
@@ -49,12 +49,12 @@ void main() {
                 sh_result_1_n1.r,
                 sh_result_1_0.r,
                 sh_result_1_1.r));
-    imageStore(lpv_voxels_r, lpv_index,
+    imageStore(lpv_voxels_g, lpv_index,
             vec4(sh_result_0_0.g,
                 sh_result_1_n1.g,
                 sh_result_1_0.g,
                 sh_result_1_1.g));
-    imageStore(lpv_voxels_r, lpv_index,
+    imageStore(lpv_voxels_b, lpv_index,
             vec4(sh_result_0_0.b,
                 sh_result_1_n1.b,
                 sh_result_1_0.b,
