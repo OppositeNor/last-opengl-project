@@ -17,7 +17,7 @@ This renderer supports the following features:
 * Real-time global illumination based on RSM.
 
 Since I didn't decide publishing this before, I didn't keep track on all the third party resources I used. If you find the dependencies
-or resource of this project is infringing your or other's copyright, please contact me through my email: [oppositenormal@outlook.com](oppositenormal@outlook.com)
+or resources of this project is infringing your or others' copyright, please post an issue or contact me through my email: oppositenormal@outlook.com
 
 # How to Build
 
@@ -46,7 +46,7 @@ cmake --build build
 
 # Release
 cmake -B release -G Ninja -DUSE_LOCAL_DEPS=ON -DCMAKE_BUILD_TYPE=Release
-cmake --build release --config Release
+cmake --build release
 ```
 
 Some rendering results are shown bellow:
