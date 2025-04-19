@@ -49,7 +49,11 @@ set(libs "")
 if (USE_SDL)
     set(include_dirs ${include_dirs} dependencies/SDL2/include) # imgui needs this
     add_definitions(-DUSE_SDL)
-    set(libs ${libs} SDL2::SDL2)
+    if (WIN32)
+        set(libs ${libs} SDL2::SDL2)
+    else()
+        set(libs ${libs} SDL2)
+    endif()
 else()
     set(libs ${libs} glfw)
 endif()
@@ -137,7 +141,12 @@ if(UNIX)
         m
         ICU::uc
         ICU::i18n
+        tomlplusplus
     )
+elseif(WIN32)
+    set(libs
+    ${libs}
+    tomlplusplus::tomlplusplus)
 endif()
 
 # project subdirectories
@@ -161,7 +170,6 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} PUBLIC
     glm
     assimp
-    tomlplusplus::tomlplusplus
     ${libs}
 )
 
