@@ -68,7 +68,8 @@ namespace oguna
 			size = ::MultiByteToWideChar(CP_UTF8, 0, src, length, NULL, NULL);
 			buffer.resize(size * sizeof(wchar_t));
 			MultiByteToWideChar(CP_UTF8, 0, src, length, (LPWSTR) buffer.data(), buffer.size());
-			out->swap(std::wstring((wchar_t*) buffer.data(), size));
+			auto wstr_data = std::wstring((wchar_t*) buffer.data(), size);
+			out->swap(wstr_data);
 			return size;
 		}
 
@@ -76,7 +77,7 @@ namespace oguna
 		int Utf16ToUtf8(const wchar_t *src, int length, std::string *out)
 		{
 			int size;
-			size = WideCharToMultiByte(CP_UTF8, NULL, src, length, NULL, NULL, NULL, NULL);
+			size = WideCharToMultiByte(CP_UTF8, NULL, src, length, NULL, NULL, NULL, 0);
 			buffer.resize(size);
 			WideCharToMultiByte(CP_UTF8, NULL, src, length, (LPSTR) buffer.data(), buffer.size(), NULL, NULL);
 			out->assign(buffer.data(), size);

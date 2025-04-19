@@ -12,7 +12,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <MikuMikuFormats/Vmd.h>
+#if !__WIN32
+    #include <MikuMikuFormats/Vmd.h>
+#endif
 
 glm::mat4 convert_matrix_to_glm_format(const aiMatrix4x4& p_from) {
     // learnopengl.com
@@ -97,9 +99,13 @@ void SkeletalAnimationData::parse(const char* p_model_path, const std::vector<st
     int anim_max_bone_id;
     for (auto& path : p_animations_paths) {
         if (get_ext(path) == "vmd") {
+            #if !_WIN32
             parse_assimp(p_model_path, &SkeletalAnimationData::parse_skeleton, data);
             parse_vmd_animator(path.c_str(), p_model_path, data);
             anim_max_bone_id = data.bones_infos.size();
+            #else
+            throw std::runtime_error("MMD currently not supported for Windows.");
+            #endif
         }
         else {
             parse_assimp(path.c_str(), &SkeletalAnimationData::parse_animator, data);
@@ -555,6 +561,7 @@ void SkeletalAnimationData::parse_assimp(const char* p_path, std::function<void(
     importer.FreeScene();
 }
 
+#if !_WIN32
 void SkeletalAnimationData::parse_vmd_animator(const char* p_path, const char* p_model_path, SADStructData& p_data) {
     std::unique_ptr<vmd::VmdMotion> motion = vmd::VmdMotion::LoadFromFile(p_path);
     process_vmd_animation(p_model_path, get_file_name(p_path), motion.get(), p_data);
@@ -640,3 +647,4 @@ void SkeletalAnimationData::process_vmd_animation(const std::string& p_model_pat
                                                   (double)max_frame / 30.0, 1.0));
     fb.close();
 }
+#endif

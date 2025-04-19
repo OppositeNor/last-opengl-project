@@ -1,6 +1,6 @@
 file(GLOB application_src ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-add_library(APPLICATION_LIB
+add_library(APPLICATION_LIB STATIC
     ${application_src}
 )
 

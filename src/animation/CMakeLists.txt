@@ -1,6 +1,6 @@
 file(GLOB animation_sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-add_library(ANIMATION_LIB
+add_library(ANIMATION_LIB STATIC
     ${animation_sources}
 )
 

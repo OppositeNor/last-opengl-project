@@ -14,7 +14,7 @@ option(USE_SDL "Use SDL" ON)
 message("Build type: ${CMAKE_BUILD_TYPE}")
 
 if (NOT (CMAKE_BUILD_TYPE STREQUAL "Release"))
-    if (NOT USE_LOCAL_DEPS)
+    if (NOT USE_LOCAL_DEPS AND NOT WIN32)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -Wall -Wextra")
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g")
@@ -29,7 +29,6 @@ if (NOT (CMAKE_BUILD_TYPE STREQUAL "Release"))
     # valgrind test:
     # valgrind --leak-check=full --track-origins=yes ./build/FinalProject
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 # default include dirs
 set(include_dirs
@@ -40,18 +39,23 @@ set(include_dirs
     dependencies/MMDFormats
 )
 
+if (WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas")
+    set(include_dirs ${include_dirs} ${PROJECT_SOURCE_DIR}/build/dependencies/assimp/include)
+endif()
+
 set(libs "")
 
 if (USE_SDL)
     set(include_dirs ${include_dirs} dependencies/SDL2/include) # imgui needs this
     add_definitions(-DUSE_SDL)
-    set(libs ${libs} SDL2)
+    set(libs ${libs} SDL2::SDL2)
 else()
     set(libs ${libs} glfw)
 endif()
 
 # add local deps as subdirectories
-if (USE_LOCAL_DEPS)
+if (USE_LOCAL_DEPS OR WIN32)
     # add assimp subdirectory
     set(ASSIMP_BUILD_TESTS OFF)
     set(ASSIMP_INSTALL OFF)
@@ -78,7 +82,6 @@ if (USE_LOCAL_DEPS)
         set(include_dirs ${include_dirs} dependencies/glfw/include) # imgui needs this
     endif()
 
-    # update include dirs
     set(include_dirs ${include_dirs}
         dependencies/assimp/include
         dependencies/glm
@@ -114,11 +117,13 @@ else()
 endif()
 
 # MMDFormats sources
+if (NOT WIN32)
 set(sources
     ${sources}
     ${PROJECT_SOURCE_DIR}/dependencies/MMDFormats/MikuMikuFormats/Pmd.cpp
     ${PROJECT_SOURCE_DIR}/dependencies/MMDFormats/MikuMikuFormats/Pmx.cpp
 )
+endif()
 
 include_directories(${PROJECT_NAME}
     ${include_dirs}
@@ -128,6 +133,7 @@ if(UNIX)
     find_package(ICU COMPONENTS uc i18n REQUIRED)
     set(libs
         ${libs}
+        OpenGL
         m
         ICU::uc
         ICU::i18n
@@ -153,10 +159,9 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
-    OpenGL
     glm
     assimp
-    tomlplusplus
+    tomlplusplus::tomlplusplus
     ${libs}
 )
 

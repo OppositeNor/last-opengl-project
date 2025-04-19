@@ -59,11 +59,12 @@ void LinuxOS::sleep(double p_seconds) const {
     nanosleep(&ts, nullptr);
 }
 
-#elif DEFINED _WIN32
+#elif _WIN32
 #warning "Windows system is not tested because I don't have a Windows machine. Please test this project with a Linux machine."
 
-#include "os_windows.h"
+#include "system/os_windows.h"
 #include <windows.h>
+#include <psapi.h>
 
 System *WindowsOS::Factory::create() const {
     return new WindowsOS();
