@@ -3,6 +3,7 @@
 #include "utils.hpp"
 #include "point_light.h"
 #include "spot_light.h"
+#include "voxel/voxel_lpv.h"
 #include <glm/ext/scalar_constants.hpp>
 #include <sstream>
 
@@ -59,6 +60,8 @@ void precompile_shader(std::string& p_shader_source) {
     replace_str(p_shader_source, "VERTEX_LOCATION_BONE_ID", VERTEX_LOCATION_BONE_ID);
     replace_str(p_shader_source, "VERTEX_LOCATION_BONE_WEIGHT", VERTEX_LOCATION_BONE_WEIGHT);
     replace_str(p_shader_source, "PI", glm::pi<float>());
+
+    replace_str(p_shader_source, "LPV::BIND_POINT", VoxelLPV::BIND_POINT);
 }
 
 GLuint create_shader_program(const char* p_vert_shader_path, const char* p_frag_shader_path, const char* p_geom_shader_path) {

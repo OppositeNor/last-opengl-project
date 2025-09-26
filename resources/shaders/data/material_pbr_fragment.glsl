@@ -63,6 +63,14 @@ uniform bool lighting_enabled;
 uniform bool direct_lighting_enabled;
 uniform bool gi_enabled;
 
+layout(std430, binding=LPV::BIND_POINT) buffer Lights
+{
+    float sh_coef[];
+} lpv;
+uniform float lpv_sh_degree;
+uniform uvec3 lpv_dimension;
+uniform float lpv_voxel_size;
+
 vec3 albedo;
 vec3 normal;
 float metalic;
@@ -75,16 +83,7 @@ vec3 BRDF(vec3 w_i, vec3 w_o, vec3 h, vec3 F);
 
 vec3 fresnel_schlick(vec3 h, vec3 w_o, vec3 F_0);
 
-vec4 get_value_if_exists(sampler2D p_texture, int p_size, vec3 p_default) {
-    vec4 result;
-    if (p_size > 0) {
-        result = texture(p_texture, vert_out.uv);
-    }
-    else {
-        result = vec4(p_default, 1.0);
-    }
-    return result;
-}
+vec4 get_value_if_exists(sampler2D p_texture, int p_size, vec3 p_default);
 
 float shadow_point_light_pcf(PointLight light, float kernel_size, float step_size, float bias);
 float visibility_spot_light_pcf(SpotLight light, int filter_size, float bias);
@@ -92,6 +91,10 @@ float random(vec2 st);
 vec3 get_light_space_pos(SpotLight p_light);
 vec3 get_spot_light_rsm_sample_intens(vec3 p_to_sample, vec3 p_sample_flux, vec3 p_sample_normal, float p_length_to_sample);
 vec3 pbr_shading(vec3 p_light_pos, vec3 p_light_color, float p_light_attenuation, vec3 p_view_dir);
+
+vec3 rsm_shading(vec2 fragment_uv, int light_count_constrained, vec3 view_dir);
+
+float flatten(uvec3 p_index, uvec3 p_dimension);
 
 void main() {
     vec3 view_dir = camera_f.pos - vert_out.pos;
@@ -137,47 +140,9 @@ void main() {
                     color += vec4(pbr_shading(spot_lights[i].position, spot_lights[i].color, spot_lights[i].attenuation, view_dir) * visibility, 0.0);
                 }
             }
-            if (gi_enabled && spot_lights[i].gi_type == SpotLight::GIType::RSM) {
-                vec3 light_space_pos = get_light_space_pos(spot_lights[i]);
-                if (light_space_pos.z < -1 || light_space_pos.z > 1) {
-                    continue;
-                }
-                float xi = random(fragment_uv);
-                vec3 sample_pos;
-                vec3 sample_flux;
-                vec3 sample_normal;
-                vec3 light_dir;
-                vec2 sample_uv;
-
-                // https://github.com/JuanDiegoMontoya/Fwog/blob/main/example/shaders/rsm/IndirectDitheredFiltered.comp.glsl#L63-L101
-                // Samples need to be normalized based on the radius that is sampled, otherwise changing rMax will affect the brightness.
-                float r_max = 0.0;
-                vec3 total_color = vec3(0.0);
-
-                for (int j = 0; j < SpotLight::RSM_SAMPLE_COUNT; ++j) {
-                    float angle = 2 * PI * xi;
-                    xi = random(fragment_uv + (j+1) * OFFSET_CONST);
-                    float scale = SpotLight::RSM_SAMPLE_RMAX * xi;
-                    sample_uv = light_space_pos.xy + vec2(scale * sin(angle), scale * cos(angle));
-                    if (sample_uv.x > 1 || sample_uv.x < 0 || sample_uv.y > 1 || sample_uv.y < 0) {
-                        continue;
-                    }
-                    sample_pos = texture(spot_lights[i].coordinate_map, sample_uv).rgb;
-                    sample_flux = texture(spot_lights[i].flux_map, sample_uv).rgb;
-                    sample_normal = texture(spot_lights[i].normal_map, sample_uv).rgb * 2 - 1;
-                    light_dir = sample_pos - vert_out.pos;
-                    float length_light_dir = length(light_dir);
-                    if (length(light_dir) > r_max) {
-                        r_max = length_light_dir;
-                    }
-                    vec3 E = get_spot_light_rsm_sample_intens(light_dir, sample_flux, sample_normal, length_light_dir) * xi * xi;
-                    light_dir = normalize(light_dir);
-                    vec3 h = normalize(light_dir + view_dir);
-                    vec3 k_s = fresnel_schlick(h, view_dir, mix(vec3(0.4), albedo, metalic));
-                    total_color +=  BRDF(light_dir, view_dir, h, k_s) * E;
-                }
-                color += vec4(total_color * r_max * r_max * 2.0 / SpotLight::RSM_SAMPLE_COUNT, 0.0);
-            }
+        }
+        if (gi_enabled) {
+            color += vec4(rsm_shading(fragment_uv, light_count_constrained, view_dir), 0.0);
         }
     }
 }
@@ -190,6 +155,53 @@ vec3 pbr_shading(vec3 p_light_pos, vec3 p_light_color, float p_light_attenuation
     float distance = length(p_light_pos - vert_out.pos);
     vec3 radience = p_light_color / (distance * distance) * p_light_attenuation;
     return radience * (k_d * albedo / PI + BRDF(w_i, p_view_dir, h, k_s)) * ao;
+}
+
+vec3 rsm_shading(vec2 fragment_uv, int light_count_constrained, vec3 view_dir) {
+    vec3 result = vec3(0);
+    for (int i = 0; i < light_count_constrained; ++i) {
+        if (spot_lights[i].gi_type != SpotLight::GIType::RSM) {
+            continue;
+        }
+        vec3 light_space_pos = get_light_space_pos(spot_lights[i]);
+        if (light_space_pos.z < -1 || light_space_pos.z > 1) {
+            continue;
+        }
+        float xi = random(fragment_uv);
+        vec3 sample_pos;
+        vec3 sample_flux;
+        vec3 sample_normal;
+        vec3 light_dir;
+        vec2 sample_uv;
+
+        float r_max = 0.0;
+        vec3 total_color = vec3(0.0);
+
+        for (int j = 0; j < SpotLight::RSM_SAMPLE_COUNT; ++j) {
+            float angle = 2 * PI * xi;
+            xi = random(fragment_uv + (j+1) * OFFSET_CONST);
+            float scale = SpotLight::RSM_SAMPLE_RMAX * xi;
+            sample_uv = light_space_pos.xy + vec2(scale * sin(angle), scale * cos(angle));
+            if (sample_uv.x > 1 || sample_uv.x < 0 || sample_uv.y > 1 || sample_uv.y < 0) {
+                continue;
+            }
+            sample_pos = texture(spot_lights[i].coordinate_map, sample_uv).rgb;
+            sample_flux = texture(spot_lights[i].flux_map, sample_uv).rgb;
+            sample_normal = texture(spot_lights[i].normal_map, sample_uv).rgb * 2 - 1;
+            light_dir = sample_pos - vert_out.pos;
+            float length_light_dir = length(light_dir);
+            if (length(light_dir) > r_max) {
+                r_max = length_light_dir;
+            }
+            vec3 E = get_spot_light_rsm_sample_intens(light_dir, sample_flux, sample_normal, length_light_dir) * xi * xi;
+            light_dir = normalize(light_dir);
+            vec3 h = normalize(light_dir + view_dir);
+            vec3 k_s = fresnel_schlick(h, view_dir, mix(vec3(0.4), albedo, metalic));
+            total_color +=  BRDF(light_dir, view_dir, h, k_s) * E;
+        }
+        result += total_color * r_max * r_max * 2.0 / SpotLight::RSM_SAMPLE_COUNT;
+    }
+    return result;
 }
 
 float N_TRGGX(vec3 h) {
@@ -279,4 +291,21 @@ float random(vec2 st) {
 vec3 get_light_space_pos(SpotLight p_light) {
     vec4 light_space_pos = p_light.light_space * vec4(vert_out.pos, 1.0);
     return (light_space_pos.xyz / light_space_pos.w + 1.0) / 2.0;
+}
+
+vec4 get_value_if_exists(sampler2D p_texture, int p_size, vec3 p_default) {
+    vec4 result;
+    if (p_size > 0) {
+        result = texture(p_texture, vert_out.uv);
+    }
+    else {
+        result = vec4(p_default, 1.0);
+    }
+    return result;
+}
+
+float flatten(uvec3 p_index, uvec3 p_dimension) {
+    // Clamp the index to make sure it does not cause a buffer overflow.
+    p_index = clamp(p_index, uvec3(0), p_dimension - uvec3(1));
+    return p_index.z * p_dimension.x * p_dimension.y + p_index.y * p_dimension.x + p_index.x;
 }

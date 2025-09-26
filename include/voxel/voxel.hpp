@@ -2,13 +2,13 @@
 #define __VOXEL_H__
 
 #include <cstddef>
-#include <glm/ext/vector_float3.hpp>
+#include <cstdlib>
 #include <glm/glm.hpp>
 
 class Voxel {
 public:
     Voxel(glm::vec3 p_dimension, size_t p_voxel_size)
-        : dimension(p_dimension), voxel_size(p_voxel_size) {}
+        : dimension(p_dimension), voxel_size(std::fabs(p_voxel_size)) {}
     virtual ~Voxel() {}
     Voxel(const Voxel&) = delete;
     Voxel(Voxel&&) = delete;
@@ -23,9 +23,12 @@ public:
         return voxel_size;
     }
 
+    virtual void bind(uint32_t p_index) const = 0;
+    virtual void unbind(uint32_t p_index) const = 0;
+
 protected:
-    glm::vec3 dimension;
-    size_t voxel_size;
+    glm::uvec3 dimension;
+    float voxel_size;
 
 };
 

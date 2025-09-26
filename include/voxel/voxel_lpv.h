@@ -10,8 +10,10 @@ public:
     VoxelLPV(glm::vec3 p_dimension, size_t p_voxel_size);
     virtual ~VoxelLPV();
 
-    void bind(uint32_t p_index) const;
-    void unbind(uint32_t p_index) const;
+    virtual void bind(uint32_t p_index) const override;
+    virtual void unbind(uint32_t p_index) const override;
+
+    static constexpr uint32_t BIND_POINT = 1;
 
 private:
     struct VoxelData {
