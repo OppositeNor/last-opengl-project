@@ -1,5 +1,6 @@
 #include "voxel/voxel_lpv.h"
 #include "graphics.h"
+#include "shader/shader.h"
 #include <memory>
 
 VoxelLPV::VoxelLPV(glm::vec3 p_dimension, size_t p_voxel_size)
@@ -21,6 +22,11 @@ void VoxelLPV::unbind(uint32_t p_index) const {
     GL_CALL(glBindBufferBase, GL_SHADER_STORAGE_BUFFER, p_index, 0);
 }
 
+void VoxelLPV::set_uniform(const Shader* p_shader) const {
+    p_shader->set_uniform("lpv_sh_degree", SH_DEGREE);
+    p_shader->set_uniform_ivec3("lpv_dimension", dimension);
+    p_shader->set_uniform("lpv_voxel_size", voxel_size);
+}
 
 uint32_t VoxelLPV::get_ssbo() const {
     if (ssbo == 0) {

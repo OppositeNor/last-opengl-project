@@ -27,6 +27,9 @@ public:
     // Set a uniform for a 3D vector
     void set_uniform(const std::string& name, const glm::vec3& value, bool is_required = false) const;
 
+    // Set a uniform for a 3D unsigned int vector
+    void set_uniform_ivec3(const std::string& p_name, const glm::ivec3& p_value, bool p_is_required = false) const;
+
     // Set a uniform for a 3D float tuple
     void set_uniform(const std::string& name, const Tuple<float, 3>& value, bool is_required = false) const;
 

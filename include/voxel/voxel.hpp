@@ -1,6 +1,7 @@
 #ifndef __VOXEL_H__
 #define __VOXEL_H__
 
+#include "shader/shader.h"
 #include <cstddef>
 #include <cstdlib>
 #include <glm/glm.hpp>
@@ -25,9 +26,10 @@ public:
 
     virtual void bind(uint32_t p_index) const = 0;
     virtual void unbind(uint32_t p_index) const = 0;
+    virtual void set_uniform(const Shader* p_shader) const = 0;
 
 protected:
-    glm::uvec3 dimension;
+    glm::ivec3 dimension;
     float voxel_size;
 
 };

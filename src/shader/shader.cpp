@@ -53,6 +53,18 @@ void Shader::set_uniform(const std::string& p_name, const glm::vec3& p_value, bo
     GL_CALL(glUniform3fv, location, 1, &p_value[0]);
 }
 
+void Shader::set_uniform_ivec3(const std::string& p_name, const glm::ivec3& p_value, bool p_is_required) const {
+    use();
+    GLint location = GL_CALL(glGetUniformLocation, id, p_name.c_str());
+    if (location == -1) {
+        if (p_is_required) {
+            std::cout << "Uniform " << p_name << " not found or not used in shader program " << id << '.' << std::endl;
+        }
+        return;
+    }
+    GL_CALL(glUniform3iv, location, 1, &p_value[0]);
+}
+
 void Shader::set_uniform(const std::string& p_name, const Tuple<float, 3>& p_value, bool p_is_required) const {
     use();
     GLint location = GL_CALL(glGetUniformLocation, id, p_name.c_str());

@@ -12,8 +12,10 @@ public:
 
     virtual void bind(uint32_t p_index) const override;
     virtual void unbind(uint32_t p_index) const override;
+    virtual void set_uniform(const Shader* p_shader) const override;
 
     static constexpr uint32_t BIND_POINT = 1;
+    static constexpr int SH_DEGREE = 9;
 
 private:
     struct VoxelData {

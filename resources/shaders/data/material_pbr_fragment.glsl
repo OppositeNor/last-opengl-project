@@ -65,10 +65,10 @@ uniform bool gi_enabled;
 
 layout(std430, binding=LPV::BIND_POINT) buffer Lights
 {
-    float sh_coef[];
+    float sh_coefs[];
 } lpv;
 uniform float lpv_sh_degree;
-uniform uvec3 lpv_dimension;
+uniform ivec3 lpv_dimension;
 uniform float lpv_voxel_size;
 
 vec3 albedo;
@@ -94,7 +94,7 @@ vec3 pbr_shading(vec3 p_light_pos, vec3 p_light_color, float p_light_attenuation
 
 vec3 rsm_shading(vec2 fragment_uv, int light_count_constrained, vec3 view_dir);
 
-float flatten(uvec3 p_index, uvec3 p_dimension);
+float flatten(ivec3 p_index, ivec3 p_dimension);
 
 void main() {
     vec3 view_dir = camera_f.pos - vert_out.pos;
@@ -304,8 +304,8 @@ vec4 get_value_if_exists(sampler2D p_texture, int p_size, vec3 p_default) {
     return result;
 }
 
-float flatten(uvec3 p_index, uvec3 p_dimension) {
+float flatten(ivec3 p_index, ivec3 p_dimension) {
     // Clamp the index to make sure it does not cause a buffer overflow.
-    p_index = clamp(p_index, uvec3(0), p_dimension - uvec3(1));
+    p_index = clamp(p_index, ivec3(0), p_dimension - ivec3(1));
     return p_index.z * p_dimension.x * p_dimension.y + p_index.y * p_dimension.x + p_index.x;
 }
