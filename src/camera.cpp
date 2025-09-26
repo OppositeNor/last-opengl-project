@@ -1,7 +1,6 @@
 #include "camera.h"
 #include "utils.hpp"
 #include "graphics.h"
-#include <cmath>
 #include <glm/ext/matrix_transform.hpp>
 
 Camera::Camera(float p_camera_speed) : position(0.0f, 0.0f, 1.0f), direction(0.0f, 0.0f, -1.0f),

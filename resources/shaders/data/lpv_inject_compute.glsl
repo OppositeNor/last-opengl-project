@@ -23,7 +23,7 @@ struct SpotLight {
 uniform SpotLight spot_light;
 
 float flatten(ivec3 p_index, ivec3 p_dimension);
-ivec2 reshape_vec2(float p_index, ivec2 p_dimension);
+ivec2 reshape_vec2(int p_index, ivec2 p_dimension);
 
 // https://computergraphics.stackexchange.com/questions/4997/spherical-harmonics-diffuse-cubemap-how-to-get-coefficients
 #define SH_0_0(normal) ( 0.282095; )
@@ -41,6 +41,7 @@ float flatten(ivec3 p_index, ivec3 p_dimension) {
     return p_index.z * p_dimension.x * p_dimension.y + p_index.y * p_dimension.x + p_index.x;
 }
 
-ivec2 reshape_vec2(float p_index, ivec2 p_dimension) {
-    return 
+ivec2 reshape_vec2(int p_index, ivec2 p_dimension) {
+    p_index.clamp(p_index, p_dimension.x * p_dimension.y);
+    return ivec2(p_index / p_dimension.x, p_index % p_dimension.x);
 }
