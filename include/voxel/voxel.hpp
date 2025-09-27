@@ -26,7 +26,7 @@ public:
 
     virtual void bind(uint32_t p_index) const = 0;
     virtual void unbind(uint32_t p_index) const = 0;
-    virtual void set_uniform(const Shader* p_shader) const = 0;
+    virtual void set_uniform(const Shader* p_shader, glm::vec3 p_voxels_lbb) const = 0;
 
 protected:
     glm::ivec3 dimension;

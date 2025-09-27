@@ -48,6 +48,7 @@ void precompile_shader(std::string& p_shader_source) {
     replace_str(p_shader_source, "SpotLight::GIType::NONE", SpotLight::GIType::NONE);
     replace_str(p_shader_source, "SpotLight::GIType::RSM", SpotLight::GIType::RSM);
     replace_str(p_shader_source, "SpotLight::GIType::LPV", SpotLight::GIType::LPV);
+    replace_str(p_shader_source, "LPV::SH_DEGREE", VoxelLPV::SH_DEGREE);
 
     replace_str(p_shader_source, "DEPTH_PREPASS_BIAS", 0.0001);
     replace_str(p_shader_source, "MAX_BONE_INFLUENCE", SkeletonModel::MAX_BONE_INFLUENCE);

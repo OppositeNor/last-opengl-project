@@ -22,10 +22,11 @@ void VoxelLPV::unbind(uint32_t p_index) const {
     GL_CALL(glBindBufferBase, GL_SHADER_STORAGE_BUFFER, p_index, 0);
 }
 
-void VoxelLPV::set_uniform(const Shader* p_shader) const {
+void VoxelLPV::set_uniform(const Shader* p_shader, glm::vec3 p_voxels_lbb) const {
     p_shader->set_uniform("lpv_sh_degree", SH_DEGREE);
     p_shader->set_uniform_ivec3("lpv_dimension", dimension);
     p_shader->set_uniform("lpv_voxel_size", voxel_size);
+    p_shader->set_uniform("lpv_lbb", p_voxels_lbb);
 }
 
 uint32_t VoxelLPV::get_ssbo() const {

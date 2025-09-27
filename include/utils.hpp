@@ -1,6 +1,7 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 #include <cstddef>
+#include <cstdint>
 #include <map>
 #include <stdexcept>
 #include <memory>
@@ -443,6 +444,10 @@ struct SceneNodeType {
     constexpr static bool is_point_light = std::is_base_of_v<class PointLightObject, T>;
     constexpr static bool is_spot_light = std::is_base_of_v<class SpotLightObject, T>;
 };
+
+constexpr uint32_t get_sh_coeff_count_from_degree(uint32_t p_sh_degree) {
+    return (p_sh_degree + 1) * (p_sh_degree + 1);
+}
 
 #endif
 

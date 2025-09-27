@@ -1,6 +1,7 @@
 #ifndef __WBE_VOXEL_LPV_H__
 #define __WBE_VOXEL_LPV_H__
 
+#include "utils.hpp"
 #include "voxel.hpp"
 #include <cstdint>
 #include <glm/ext/vector_float3.hpp>
@@ -12,15 +13,15 @@ public:
 
     virtual void bind(uint32_t p_index) const override;
     virtual void unbind(uint32_t p_index) const override;
-    virtual void set_uniform(const Shader* p_shader) const override;
+    virtual void set_uniform(const Shader* p_shader, glm::vec3 p_voxels_lbb) const override;
 
     static constexpr uint32_t BIND_POINT = 1;
-    static constexpr int SH_DEGREE = 9;
+    static constexpr int SH_DEGREE = 3;
 
 private:
     struct VoxelData {
         // Spherical harmonics coefficients.
-        float sh_coef[9];
+        float sh_coef[get_sh_coeff_count_from_degree(SH_DEGREE) * 3];
     };
 
     // Flattens a vec3 index to the index of the voxel.
