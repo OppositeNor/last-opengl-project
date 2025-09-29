@@ -9,6 +9,7 @@
 #include "spot_light.h"
 #include "framebuffer/framebuffer.h"
 #include <stdexcept>
+#include <string>
 
 Shader::~Shader() {
     if (id != 0) {
@@ -265,6 +266,35 @@ void Shader::set_uniform(const std::string& p_name, const SpotLight* p_light, bo
             set_uniform(p_name + ".normal_map", p_light->get_normal_map().get(), p_is_required);
             set_uniform(p_name + ".coordinate_map", p_light->get_coordinate_map().get(), p_is_required);
             set_uniform(p_name + ".flux_map", p_light->get_flux_map().get(), p_is_required);
+            break;
+        default:
+            throw std::runtime_error("Unsupported GI type.");
+    };
+}
+
+void Shader::set_uniform_compute(uint32_t p_index, const class SpotLight* p_light, bool p_is_required) const {
+    REQUIRE_NON_NULL(p_light);
+    use();
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].position", p_light->get_position(), p_is_required);
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].color", p_light->get_color(), p_is_required);
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].far_plane", p_light->get_shadow_range(), p_is_required);
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].attenuation", p_light->get_attenuation(), p_is_required);
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].light_view", p_light->get_light_view(), p_is_required);
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].light_space", p_light->get_light_space(), p_is_required);
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].gi_type", p_light->get_gi_type(), p_is_required);
+    set_uniform("spot_lights[" + std::to_string(p_index) + "].shadow_map_bias", p_light->get_shadow_map_bias(), p_is_required);
+    switch (p_light->get_gi_type()) {
+        case SpotLight::GIType::NONE: {
+            auto default_texture = GlobalResource::get_singleton()->get_resource<Texture2DRGB>("default_texture_2d");
+            set_uniform("normal_maps[" + std::to_string(p_index) + "]", default_texture.get(), p_is_required);
+            set_uniform("coordinate_maps[" + std::to_string(p_index) + "]", default_texture.get(), p_is_required);
+            set_uniform("flux_map[" + std::to_string(p_index) + "]", default_texture.get(), p_is_required);
+        }   break;
+        case SpotLight::GIType::LPV:
+        case SpotLight::GIType::RSM:
+            set_uniform("normal_maps[" + std::to_string(p_index) + "]", p_light->get_normal_map().get(), p_is_required);
+            set_uniform("coordinate_maps[" + std::to_string(p_index) + "]", p_light->get_coordinate_map().get(), p_is_required);
+            set_uniform("flux_map[" + std::to_string(p_index) + "]", p_light->get_flux_map().get(), p_is_required);
             break;
         default:
             throw std::runtime_error("Unsupported GI type.");

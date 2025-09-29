@@ -57,8 +57,11 @@ public:
     // Set a uniform for a point light
     void set_uniform(const std::string& p_name, const class PointLight* p_light, bool p_is_required = false) const;
 
-    // Set a uniform for an area light
+    // Set a uniform for a spot light
     void set_uniform(const std::string& p_name, const class SpotLight* p_light, bool p_is_required = false) const;
+
+    // Set a uniform for a spot light for the compute shader
+    void set_uniform_compute(uint32_t p_index, const class SpotLight* p_light, bool p_is_required = false) const;
 
     // Get the names of the active uniforms
     std::string get_active_uniform_names() const;

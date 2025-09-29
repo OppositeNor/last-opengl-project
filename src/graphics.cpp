@@ -60,7 +60,10 @@ void precompile_shader(std::string& p_shader_source) {
     replace_str(p_shader_source, "VERTEX_LOCATION_BITANGENT", VERTEX_LOCATION_BITANGENT);
     replace_str(p_shader_source, "VERTEX_LOCATION_BONE_ID", VERTEX_LOCATION_BONE_ID);
     replace_str(p_shader_source, "VERTEX_LOCATION_BONE_WEIGHT", VERTEX_LOCATION_BONE_WEIGHT);
+
     replace_str(p_shader_source, "PI", glm::pi<float>());
+    replace_str(p_shader_source, "SH_0", 0.28209479177387814);
+    replace_str(p_shader_source, "SH_1_1", 0.3454941494713355);
 
     replace_str(p_shader_source, "LPV::BIND_POINT", VoxelLPV::BIND_POINT);
 }
