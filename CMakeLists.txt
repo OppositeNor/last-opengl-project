@@ -159,7 +159,6 @@ add_subdirectory(src/scene_node)
 add_subdirectory(src/data)
 add_subdirectory(src/animation)
 add_subdirectory(src/material)
-add_subdirectory(src/scene_grid)
 add_subdirectory(src/texture)
 
 add_executable(${PROJECT_NAME}

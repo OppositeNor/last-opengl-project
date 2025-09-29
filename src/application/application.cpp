@@ -30,7 +30,6 @@ void Application::tick(double p_delta_time) {
         switch (spot_light->get_light()->get_gi_type()) {
             case SpotLight::GIType::NONE:
                 break;
-            case SpotLight::GIType::LPV:
             case SpotLight::GIType::RSM: {
                 Framebuffer* fb = REQUIRE_NON_NULL(spot_light->get_light()->get_coordinate_map().get());
                 spot_light->get_light()->pre_draw(fb);
@@ -48,9 +47,6 @@ void Application::tick(double p_delta_time) {
                     drawable->draw_flux(spot_light->get_light());
                 }
                 fb->unbind();
-                if (spot_light->get_light()->get_gi_type() == SpotLight::GIType::LPV) {
-                    spot_light->get_light()->get_sg_lpv()->dispatch_compute();
-                }
             }   break;
             default:
                 break;

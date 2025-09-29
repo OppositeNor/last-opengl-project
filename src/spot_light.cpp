@@ -20,9 +20,6 @@ SpotLight::SpotLight(const glm::vec3& p_color, float p_attenuation, float p_shad
     shadow_map = std::make_unique<FBDepth>(p_shadow_resolution, p_shadow_resolution, config,
                                            REQUIRE_NON_NULL(GlobalResource::get_singleton()->get_resource<ShaderPipeline>("shader_spot_light_shadowmap")));
     switch (gi_type) {
-        case GIType::LPV:
-            sg_lpv_sh = std::make_unique<SGLPVSH>(p_lpv_resolution, this, -lpv_range, lpv_range);
-            [[fallthrough]];
         case GIType::RSM:
             coordinate_map = std::make_unique<FBFRGB>(p_rsm_resolution, p_rsm_resolution, glm::vec3(0), glm::vec3(0), config,
                                                       REQUIRE_NON_NULL(GlobalResource::get_singleton()->get_resource<ShaderPipeline>("shader_world_coordinate")));

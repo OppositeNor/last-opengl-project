@@ -4,7 +4,6 @@
 #include "framebuffer/fb_depth.h"
 #include "framebuffer/fb_srgb.h"
 #include "framebuffer/fb_regular.h"
-#include "scene_grid/sg_lpv_sh.h"
 #include "utils.hpp"
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
@@ -189,10 +188,6 @@ public:
         return lpv_resolution;
     }
 
-    const SGLPVSH* get_sg_lpv() const {
-        return sg_lpv_sh.get();
-    }
-
 private:
     glm::vec3 position;
     glm::vec3 color;
@@ -211,7 +206,6 @@ private:
     unsigned int rsm_resolution;
     unsigned int lpv_resolution;
     glm::vec3 lpv_range;
-    std::unique_ptr<SGLPVSH> sg_lpv_sh = nullptr;
 };
 
 class SpotLightObject {

@@ -2,6 +2,8 @@
 #define __APPLICATION_CORNELL_BOX_H__
 #include "application/application.h"
 #include "data/skeleton_model.h"
+#include "framebuffer/fb_depth.h"
+#include "framebuffer/fb_regular.h"
 #include "scene_node/sn_box.h"
 #include "scene_node/sn_skeleton_model.h"
 #include "scene_node/sn_spot_light.h"
