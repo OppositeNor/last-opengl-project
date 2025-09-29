@@ -17,7 +17,7 @@ path = "models/data/spartan/scene.gltf"
 ["hutao"]
 type = "skeletal_animation_data"
 path = "models/data/hutao/hutao_multi2.fbx"
-mesh_z_up_to_y_up = true
+mesh_z_up_to_y_up = false
 
 ["miku"]
 type = "skeletal_animation_data"

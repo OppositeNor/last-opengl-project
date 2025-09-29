@@ -33,7 +33,6 @@ void ApplicationHouseHutao::init(const char* p_window_title, int p_window_width,
 
     mesh = hutao_sa_data->get_skeleton_model();
     mesh_model = new SNSkeletonModel(this, mesh, hutao_sa_data->get_skeleton());
-    // mesh_model->get_local_transform().scale(glm::vec3(0.1, 0.1, 0.1));
     // mesh_model->get_local_transform().rotate(glm::pi<float>() / -2.0, 1.0, 0.0, 0.0);
 
     mesh_model_animator = hutao_sa_data->get_animator_skeletal().get();
