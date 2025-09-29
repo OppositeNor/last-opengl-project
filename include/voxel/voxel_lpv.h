@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <glm/ext/vector_float3.hpp>
 #include <memory>
+
 class VoxelLPV : public Voxel {
 public:
     VoxelLPV(glm::vec3 p_dimension, size_t p_voxel_size);
