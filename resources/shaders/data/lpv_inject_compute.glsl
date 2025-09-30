@@ -25,11 +25,6 @@ float get_sh_coef(vec3 p_color, vec3 p_normal, int p_sh_degree, int p_sh_index);
 
 int lpv_stride = (LPV::SH_DEGREE + 1) * (LPV::SH_DEGREE + 1) * 3;
 
-#define SH_0    0.28209479177387814
-#define SH_1_0  0.4886025119029199
-#define SH_1_1  0.3454941494713355
-#define SH_2_0 
-
 void main() {
     uint image_index = gl_WorkGroupID.x;
     if (image_index > spot_light_count) {
