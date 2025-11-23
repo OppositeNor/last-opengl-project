@@ -31,6 +31,19 @@ mat3 kernel = mat3(
 // ) / 9;
 // #define FILTER_SIZE 3
 
+// linear RGB -> sRGB
+float correct(float p_cl) {
+    if (p_cl >= 1.0) {
+        return 1.0;
+    } else if (p_cl <= 0.0) {
+        return 0.0;
+    } else if (p_cl < 0.0031308) {
+        return 12.92 * p_cl;
+    } else {
+        return 1.055 * pow(p_cl, 0.41666) - 0.055;
+    }
+}
+
 void main() {
     color = vec4(0.0);
     vec2 texel_size = 1.0 / textureSize(framebuffer, 0);
@@ -40,5 +53,5 @@ void main() {
         }
     }
     // gamma correction
-    color.rgb = pow(color.rgb, vec3(1.0 / 2.2));
+    color.rgb = vec3(correct(color.r), correct(color.g), correct(color.b));
 }

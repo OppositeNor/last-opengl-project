@@ -2,6 +2,7 @@
 #include "graphics.h"
 #include "resource/global_resource.h"
 #include "system/system.h"
+#include <iostream>
 #include <stdexcept>
 #include <imgui.h>
 #ifdef USE_SDL
@@ -55,6 +56,8 @@ void Window::init() {
         }
     }
     init_key_bindes();
+    const char* device_name = (const char*)GL_CALL(glGetString, GL_RENDERER);
+    std::cout << "Using device: " << device_name << "." << std::endl;
 }
 
 #ifdef USE_SDL
